@@ -1,7 +1,6 @@
 package codegym.com.vn.model;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.persistence.*;
 
@@ -17,5 +16,5 @@ public class Like {
     private Post Post;
 
     @OneToOne
-    private Account account;
+    private User user;
 }
