@@ -16,4 +16,6 @@ public interface IUserRepository extends JpaRepository<User,Long> {
 
     Iterable<User> findUsersByFullNameContaining(String user_name);
 
+    Optional<User> findByFullName(String fullName);
+
 }

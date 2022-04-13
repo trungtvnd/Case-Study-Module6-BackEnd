@@ -6,4 +6,5 @@ import codegym.com.vn.service.InterfaceGeneral;
 import java.awt.*;
 
 public interface IPostService extends InterfaceGeneral<Post> {
+    Iterable<Post> findPostByIdUser(Long idUser);
 }

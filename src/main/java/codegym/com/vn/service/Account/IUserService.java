@@ -23,4 +23,9 @@ public interface IUserService {
     void delete(Long id);
 
     Iterable<User> findUsersByNameContaining(String user_name);
+
+    Optional<User> findByFullName(String fullName);
+
+
+
 }

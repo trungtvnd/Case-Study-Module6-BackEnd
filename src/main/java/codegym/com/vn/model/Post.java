@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -16,11 +15,13 @@ public class Post {
     private String title;
     private String content;
     private String description;
-    private String avatar;
-    private boolean status;
+    private String avatarPost;
 
-    @ManyToMany
-    private List<HashTag> hashTags;
+    @ManyToOne
+    private Status status;
+
+    @ManyToOne
+    private HashTags hashTags;
 
     @ManyToOne
     private User user;

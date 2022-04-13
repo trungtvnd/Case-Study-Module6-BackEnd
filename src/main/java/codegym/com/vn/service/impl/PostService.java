@@ -48,4 +48,9 @@ public class PostService implements IPostService {
     public Iterable<Post> findByName(String name) {
         return iPostRepository.findAllByTitleContaining(name);
     }
+
+    @Override
+    public Iterable<Post> findPostByIdUser(Long idUser) {
+        return iPostRepository.findAllByUser_Id(idUser);
+    }
 }

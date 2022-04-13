@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class HashTag {
+public class HashTags {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

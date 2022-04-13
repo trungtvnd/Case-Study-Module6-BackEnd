@@ -1,10 +1,11 @@
 package codegym.com.vn.controller.user;
 
 
-import codegym.com.vn.model.Comment;
-import codegym.com.vn.model.Post;
-import codegym.com.vn.service.interfaceService.ICommentService;
+import codegym.com.vn.model.*;
+import codegym.com.vn.service.Account.IUserService;
+import codegym.com.vn.service.interfaceService.IHashTagService;
 import codegym.com.vn.service.interfaceService.IPostService;
+import codegym.com.vn.service.interfaceService.IStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,25 @@ public class PostController {
 
     @Autowired
     private IPostService iPostService;
+    @Autowired
+    private IHashTagService iHashTagService;
+    @Autowired
+    private IStatusService iStatusService;
+    @Autowired
+    private IUserService iUserService;
 
     @GetMapping
     public ResponseEntity<Iterable<Post>> showAll() {
         Iterable<Post> posts = iPostService.findAll();
+        if (!posts.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("displayByUser/{id}")
+    public ResponseEntity<Iterable<Post>> showAllByUser(@PathVariable("id") Long idUser) {
+        Iterable<Post> posts = iPostService.findPostByIdUser(idUser);
         if (!posts.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -70,6 +86,42 @@ public class PostController {
         }
         iPostService.delete(id);
         return new ResponseEntity<>(post.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Iterable<Status>> showAllStatus() {
+        Iterable<Status> status = iStatusService.findAll();
+        if (!status.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(status, HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<Iterable<User>> showAllUser() {
+        Iterable<User> users  = iUserService.findAll();
+        if (!users.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/hashtags")
+    public ResponseEntity<Iterable<HashTags>> showAllHashtags() {
+        Iterable<HashTags> hashTags = iHashTagService.findAll();
+        if (!hashTags.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(hashTags, HttpStatus.OK);
+    }
+
+    @GetMapping("users/{fullName}")
+    public ResponseEntity<?> findUserByFullName(@PathVariable("fullName") String fullName) {
+        Optional<User> user = iUserService.findByFullName(fullName);
+        if (!user.isPresent()) {
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
 

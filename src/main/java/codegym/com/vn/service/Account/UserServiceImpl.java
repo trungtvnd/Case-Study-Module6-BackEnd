@@ -51,4 +51,9 @@ public class UserServiceImpl implements IUserService {
     public Iterable<User> findUsersByNameContaining(String user_name) {
         return repository.findUsersByFullNameContaining(user_name);
     }
+
+    @Override
+    public Optional<User> findByFullName(String fullName) {
+        return repository.findByFullName(fullName);
+    }
 }
