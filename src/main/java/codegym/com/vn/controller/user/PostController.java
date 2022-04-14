@@ -44,10 +44,6 @@ public class PostController {
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
-
-
-
-
     //lấy 1 đối tượng theo id
     @GetMapping("/{id}")
     public ResponseEntity<Post> showOne(@PathVariable("id") Long id) {

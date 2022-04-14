@@ -24,12 +24,11 @@ public class PostService implements IPostService {
 
     @Override
     public Post save(Post post) {
-        return iPostRepository.save(post);
+        return iPostRepository.saveAndFlush(post);
     }
 
     @Override
     public void delete(Long id) {
-
          iPostRepository.deleteById(id);
 
     }
