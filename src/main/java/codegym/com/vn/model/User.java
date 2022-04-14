@@ -22,7 +22,7 @@ import java.util.Set;
                 "email"
         })
 })
-public class User {
+public class  User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,6 +49,7 @@ public class User {
     private String phone;
     private String avatar;
     private Boolean status;
+
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
