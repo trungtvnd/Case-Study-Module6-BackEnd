@@ -1,9 +1,5 @@
 package codegym.com.vn.service.Account;
 
-
-
-
-
 import codegym.com.vn.model.User;
 
 import java.util.Optional;
@@ -16,7 +12,7 @@ public interface IUserService {
 
     Optional<User> findById(Long id);
 
-    void save(User user);
+    User save(User user);
 
     Iterable<User> findAll();
 
