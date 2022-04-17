@@ -11,11 +11,8 @@ public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private Long id;
-    private int status;
-
     @ManyToOne
     private Post Post;
-
     @OneToOne
     private User user;
 }

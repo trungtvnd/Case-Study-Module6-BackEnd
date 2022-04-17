@@ -1,6 +1,6 @@
 package codegym.com.vn.service.impl;
 
-import codegym.com.vn.model.Comment;
+import codegym.com.vn.model.CommentPost;
 import codegym.com.vn.repository.ICommentRepository;
 import codegym.com.vn.service.interfaceService.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CommentService implements ICommentService {
+public class CommentServiceImpl implements ICommentService {
 
     @Autowired
     private ICommentRepository iCommentRepository;
 
     @Override
-    public Iterable<Comment> findAll() {
+    public Iterable<CommentPost> findAll() {
         return iCommentRepository.findAll();
     }
 
     @Override
-    public Comment save(Comment comment) {
+    public CommentPost save(CommentPost comment) {
         return iCommentRepository.save(comment);
     }
 
@@ -33,17 +33,22 @@ public class CommentService implements ICommentService {
     }
 
     @Override
-    public Page<Comment> findPage(Pageable pageable) {
+    public Page<CommentPost> findPage(Pageable pageable) {
         return null;
     }
 
     @Override
-    public Optional<Comment> findById(Long id) {
+    public Optional<CommentPost> findById(Long id) {
         return iCommentRepository.findById(id);
     }
 
     @Override
-    public Iterable<Comment> findByName(String name) {
+    public Iterable<CommentPost> findByName(String name) {
         return null;
+    }
+
+    @Override
+    public Iterable<CommentPost> findByPostId(Long id) {
+        return iCommentRepository.findAllByPostId(id);
     }
 }

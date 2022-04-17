@@ -101,6 +101,6 @@ public class AuthRestAPIs {
         user.setRoles(roles);
         userService.save(user);
 
-        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Success"), HttpStatus.OK);
     }
 }

@@ -7,14 +7,14 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Comment {
+public class CommentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private  String content;
 
     @ManyToOne
-    private Post Post;
+    private Post post;
 
     @ManyToOne
     private User user;

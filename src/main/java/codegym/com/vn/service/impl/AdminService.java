@@ -38,7 +38,7 @@ public class AdminService implements IAdminService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return iAdminRepository.findById(id);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package codegym.com.vn.controller.user;
 
 
-import codegym.com.vn.model.Comment;
+import codegym.com.vn.model.CommentPost;
 import codegym.com.vn.service.interfaceService.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class CommentController {
     private ICommentService iCommentService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Comment>> showAll() {
-        Iterable<Comment> comments = iCommentService.findAll();
+    public ResponseEntity<Iterable<CommentPost>> showAll() {
+        Iterable<CommentPost> comments = iCommentService.findAll();
         if (!comments.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -28,12 +28,20 @@ public class CommentController {
     }
 
 
+    @GetMapping("/post/{id}")
+    public ResponseEntity<Iterable<CommentPost>> showAllByPostId(@PathVariable("id") Long id) {
+        Iterable<CommentPost> comments = iCommentService.findByPostId(id);
+        if (!comments.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
 
 
     //lấy 1 đối tượng theo id
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> showOne(@PathVariable("id") Long id) {
-        Optional<Comment> product = iCommentService.findById(id);
+    public ResponseEntity<CommentPost> showOne(@PathVariable("id") Long id) {
+        Optional<CommentPost> product = iCommentService.findById(id);
         if (!product.isPresent()) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -42,15 +50,15 @@ public class CommentController {
 
     //tạo mới 1 đội tượng
     @PostMapping
-    public ResponseEntity<Comment> createProduct(@RequestBody Comment comment) {
-        Comment commentCreate = iCommentService.save(comment);
+    public ResponseEntity<CommentPost> createProduct(@RequestBody CommentPost comment) {
+        CommentPost commentCreate = iCommentService.save(comment);
         return new ResponseEntity<>(commentCreate, HttpStatus.CREATED);
     }
 
     //cập nhật 1 đối tượng có id
     @PutMapping("{id}")
-    public ResponseEntity<Comment> editProduct(@RequestBody Comment commentEdit, @PathVariable("id") Long id) {
-        Optional<Comment> comment = iCommentService.findById(id);
+    public ResponseEntity<CommentPost> editProduct(@RequestBody CommentPost commentEdit, @PathVariable("id") Long id) {
+        Optional<CommentPost> comment = iCommentService.findById(id);
         if (!comment.isPresent()) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -61,15 +69,14 @@ public class CommentController {
 
     //xóa 1 đối tượng theo id
     @DeleteMapping("{id}")
-    public ResponseEntity<Comment> delete(@PathVariable("id") Long id) {
-        Optional<Comment> comment = iCommentService.findById(id);
+    public ResponseEntity<CommentPost> delete(@PathVariable("id") Long id) {
+        Optional<CommentPost> comment = iCommentService.findById(id);
         if (!comment.isPresent()) {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         iCommentService.delete(id);
         return new ResponseEntity<>(comment.get(), HttpStatus.OK);
     }
-
 
 
 //    @PostMapping("/upload")

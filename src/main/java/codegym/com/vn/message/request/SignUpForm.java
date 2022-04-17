@@ -27,6 +27,18 @@ public class SignUpForm {
     @Size(min = 6, max = 40)
     private String password;
 
+    public String getRePassword() {
+        return rePassword;
+    }
+
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
+    }
+
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String rePassword;
+
     public String getName() {
         return name;
     }

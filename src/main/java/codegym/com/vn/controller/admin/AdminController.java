@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/admin")
@@ -38,6 +40,26 @@ public class AdminController {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("user/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable("id") Long id) {
+        Optional<User> user = iAdminService.findById(id);
+        if (!user.isPresent()) {
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> editUser(@RequestBody User userEdit, @PathVariable("id") Long id) {
+        Optional<User> user = iAdminService.findById(id);
+        if (!user.isPresent()) {
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        userEdit.setId(user.get().getId());
+        userEdit = iAdminService.save(userEdit);
+        return new ResponseEntity<>(userEdit, HttpStatus.OK);
     }
 
 
