@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 @Entity
 @Data
@@ -36,7 +37,6 @@ public class  User {
     @Size(min = 6 ,max = 100)
     private String password;
 
-    @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email
@@ -48,7 +48,8 @@ public class  User {
     private String address;
     private String phone;
     private String avatar;
-    private Boolean status;
+    @ManyToOne
+    private StatusUser status;
 
 
     @JsonIgnore

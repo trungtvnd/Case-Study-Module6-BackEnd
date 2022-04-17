@@ -2,6 +2,7 @@ package codegym.com.vn.controller.auth;
 
 
 
+import codegym.com.vn.message.request.ChangeProfileForm;
 import codegym.com.vn.message.request.LoginForm;
 import codegym.com.vn.message.request.SignUpForm;
 import codegym.com.vn.message.response.JwtResponse;
@@ -9,22 +10,27 @@ import codegym.com.vn.message.response.ResponseMessage;
 import codegym.com.vn.model.Role;
 import codegym.com.vn.model.RoleName;
 import codegym.com.vn.model.User;
+import codegym.com.vn.security.jwt.JwtAuthTokenFilter;
 import codegym.com.vn.security.jwt.JwtProvider;
 import codegym.com.vn.security.service.UserPrinciple;
 import codegym.com.vn.service.Account.IRoleService;
 import codegym.com.vn.service.Account.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
@@ -46,6 +52,9 @@ public class AuthRestAPIs {
     @Autowired
     JwtProvider jwtProvider;
 
+    @Autowired
+    JwtAuthTokenFilter jwtAuthTokenFilter;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
 
@@ -57,9 +66,8 @@ public class AuthRestAPIs {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),
-                userDetails.getId() , userDetails.getName(), userDetails.getEmail(), userDetails.getAvatar() ,
-                userDetails.getAuthorities()
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),userDetails.getId(), userDetails.getFullName(), userDetails.getEmail(),
+                userDetails.getPhone(), userDetails.getAddress(), userDetails.getAvatar(), userDetails.getAuthorities()
         ));
     }
 
@@ -77,7 +85,7 @@ public class AuthRestAPIs {
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
+        User user = new User(signUpRequest.getFullName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
                 passwordEncoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
@@ -102,5 +110,26 @@ public class AuthRestAPIs {
         userService.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("Success"), HttpStatus.OK);
+    }
+
+    @PutMapping("changeProfile")
+    public ResponseEntity<?> changeProfile(HttpServletRequest request, @Valid @RequestBody ChangeProfileForm changeProfileForm) {
+        String jwt = jwtAuthTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromJwtToken(jwt);
+        User user;
+        try{
+            if(userService.existsByEmail(changeProfileForm.getEmail())){
+                return new ResponseEntity<>(new ResponseMessage("noemail"), HttpStatus.OK);
+            }
+            user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Username not found" + username));
+            user.setEmail(changeProfileForm.getEmail());
+            user.setAddress(changeProfileForm.getAddress());
+            user.setPhone(changeProfileForm.getPhone());
+            user.setFullName(changeProfileForm.getFullName());
+            userService.save(user);
+            return new ResponseEntity<>(new ResponseMessage("change successfully"), HttpStatus.OK);
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 }
