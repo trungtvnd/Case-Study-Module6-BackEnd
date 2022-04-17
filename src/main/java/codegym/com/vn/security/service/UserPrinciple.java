@@ -18,11 +18,13 @@ public class UserPrinciple implements UserDetails {
 
     private Long id;
 
-    private String name;
+    private String fullName;
 
     private String username;
 
     private String email;
+    private String phone;
+    private String address;
 
     private String avatar;
 
@@ -31,13 +33,15 @@ public class UserPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> roles;
 
-    public UserPrinciple(Long id, String name,
-                         String username, String email, String password,String avatar,
+    public UserPrinciple(Long id, String fullName,
+                         String username, String email,String phone, String address, String password,String avatar,
                          Collection<? extends GrantedAuthority> roles) {
         this.id = id;
-        this.name = name;
+        this.fullName = fullName;
         this.username = username;
         this.email = email;
+        this.phone = phone;
+        this.address = address;
         this.password = password;
         this.avatar = avatar;
         this.roles = roles;
@@ -53,14 +57,37 @@ public class UserPrinciple implements UserDetails {
                 user.getFullName(),
                 user.getUserName(),
                 user.getEmail(),
+                user.getPhone(),
+                user.getAddress(),
                 user.getPassword(),
                 user.getAvatar(),
                 authorities
         );
     }
 
-    public String getName() {
-        return name;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -75,9 +102,7 @@ public class UserPrinciple implements UserDetails {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public void setUsername(String username) {
         this.username = username;

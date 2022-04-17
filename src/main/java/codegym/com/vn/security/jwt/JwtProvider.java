@@ -15,7 +15,7 @@ public class JwtProvider {
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
 
-    private String jwtSecret="tommorowLightKey";
+    private String jwtSecret="jwtGrokonezSecretKey";
 
 
     private int jwtExpiration = 86400;
@@ -53,10 +53,10 @@ public class JwtProvider {
 
     public String getUserNameFromJwtToken(String token) {
 
-        String userName = Jwts.parser()
+        String username = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody().getSubject();
-        return userName;
+        return username;
     }
 }
