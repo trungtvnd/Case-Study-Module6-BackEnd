@@ -1,4 +1,4 @@
-package codegym.com.vn.message.request;
+package codegym.com.vn.dto.request;
 
 public class ChangeProfileForm {
     private String fullName;

@@ -1,4 +1,4 @@
-package codegym.com.vn.message.response;
+package codegym.com.vn.dto.response;
 
 import org.springframework.security.core.GrantedAuthority;
 
