@@ -57,6 +57,12 @@ public class AuthRestAPIs {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+            Optional<User> user = userService.findByUsername(loginRequest.getUsername());
+        if (userService.existsByEmail(user.get().getEmail())){
+            if (!userService.findByEmail(user.get().getEmail()).get().getStatusActive()){
+                return new ResponseEntity<>(new ResponseMessage("Vui lòng kích hoạt tài khoản của bạn!"), HttpStatus.BAD_REQUEST);
+            }
+        }
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -109,7 +115,7 @@ public class AuthRestAPIs {
         user.setRoles(roles);
         userService.save(user);
 
-        return new ResponseEntity<>(new ResponseMessage("Success"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Mail has been send. Please check to active your account!"), HttpStatus.OK);
     }
 
     @PutMapping("changeProfile")
@@ -131,5 +137,20 @@ public class AuthRestAPIs {
         }catch (UsernameNotFoundException e){
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/active/{token}")
+    public ResponseEntity<?> activeUserByToken(@PathVariable String token){
+        userService.activeUser(token);
+        return new ResponseEntity<>("Active successfully!", HttpStatus.OK);
+    }
+    @GetMapping("/check-email/{mail}")
+    public ResponseEntity<?> checkEmail(@PathVariable String mail){
+        if (userService.existsByEmail(mail)){
+            if (userService.findByEmail(mail).get().getStatusActive()){
+                return new ResponseEntity<>(userService.findByEmail(mail), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

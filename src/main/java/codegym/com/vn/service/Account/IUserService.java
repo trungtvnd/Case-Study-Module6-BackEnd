@@ -1,6 +1,7 @@
 package codegym.com.vn.service.Account;
 
 import codegym.com.vn.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
 
@@ -22,6 +23,8 @@ public interface IUserService {
 
     Optional<User> findByFullName(String fullName);
 
+    Optional<User> findByEmail(String email);
 
 
+    void activeUser(String token);
 }

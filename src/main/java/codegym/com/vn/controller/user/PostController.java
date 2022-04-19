@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -120,5 +121,12 @@ public class PostController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-
+    @GetMapping("/DisplayByHastags/{id}")
+    public ResponseEntity<Iterable<Post>> showAllByHashTags(@PathVariable("id") Long idHashTags) {
+        Iterable<Post> posts = iPostService.findPostByIdHashTags(idHashTags);
+        if (!posts.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
 }

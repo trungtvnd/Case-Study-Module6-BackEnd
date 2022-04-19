@@ -1,5 +1,6 @@
 package codegym.com.vn.repository;
 
+import codegym.com.vn.model.HashTags;
 import codegym.com.vn.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,8 @@ public interface IPostRepository extends JpaRepository<Post,Long> {
 
     Iterable<Post>findAllByUser_Id(Long id);
 
-//    Iterable<Post>findAllByHashTagsContaining(List<HashTag> hashTags);
+    Iterable<Post>findAllByHashTags_Id(Long id);
+
 
 
 

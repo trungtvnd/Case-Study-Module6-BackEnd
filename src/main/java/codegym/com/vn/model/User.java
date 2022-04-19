@@ -39,8 +39,7 @@ public class  User {
 
     @NotBlank
     @Size(max = 50)
-    @Email
-    private String email;
+
 
     @NotBlank
     @Size(min = 3, max = 50)
@@ -50,6 +49,12 @@ public class  User {
     private String avatar;
     @ManyToOne
     private StatusUser status;
+
+    @Email
+    @Column(unique = true,nullable = false)
+    private String email;
+
+    private Boolean statusActive = false;
 
 
     @JsonIgnore
@@ -69,4 +74,7 @@ public class  User {
     public User() {
 
     }
+
+
+
 }
