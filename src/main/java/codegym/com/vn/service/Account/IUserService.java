@@ -1,5 +1,4 @@
 package codegym.com.vn.service.Account;
-
 import codegym.com.vn.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -13,7 +12,7 @@ public interface IUserService {
 
     Optional<User> findById(Long id);
 
-    User save(User user);
+    void save(User user);
 
     Iterable<User> findAll();
 

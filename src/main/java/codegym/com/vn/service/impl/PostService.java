@@ -64,4 +64,9 @@ public class PostService implements IPostService {
         return iPostRepository.findAllByHashTags_Id(idHashTag);
     }
 
+
+    @Override
+    public Iterable<Post> findPostByIdStatus(Long idStatus) {
+        return iPostRepository.findAllByStatus_Id(idStatus);
+    }
 }
