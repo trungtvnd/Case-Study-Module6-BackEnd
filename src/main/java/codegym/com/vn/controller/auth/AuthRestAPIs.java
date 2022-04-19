@@ -2,11 +2,9 @@ package codegym.com.vn.controller.auth;
 
 
 
-import codegym.com.vn.message.request.ChangeProfileForm;
-import codegym.com.vn.message.request.LoginForm;
-import codegym.com.vn.message.request.SignUpForm;
-import codegym.com.vn.message.response.JwtResponse;
-import codegym.com.vn.message.response.ResponseMessage;
+import codegym.com.vn.dto.request.*;
+import codegym.com.vn.dto.response.JwtResponse;
+import codegym.com.vn.dto.response.ResponseMessage;
 import codegym.com.vn.model.Role;
 import codegym.com.vn.model.RoleName;
 import codegym.com.vn.model.User;
@@ -16,7 +14,6 @@ import codegym.com.vn.security.service.UserPrinciple;
 import codegym.com.vn.service.Account.IRoleService;
 import codegym.com.vn.service.Account.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -153,4 +150,47 @@ public class AuthRestAPIs {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PutMapping("changePassword")
+    public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestBody ChangePasswordForm changePassword) {
+        String jwt = jwtAuthTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromJwtToken(jwt);
+        User user;
+        try{
+            user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Username not found" + username));
+            if (!passwordEncoder.matches(changePassword.getCurrentPassword(), user.getPassword())) {
+//            Mã 600 là lỗi sai mật khẩu hiện tại
+                return new ResponseEntity<>(new ResponseMessage("600"), HttpStatus.OK);
+            } else if (!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
+//            Mã 601 là lỗi xác nhận mật khẩu mới sai
+                return new ResponseEntity<>(new ResponseMessage("601"), HttpStatus.OK);
+            }
+            user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+            userService.save(user);
+            return new ResponseEntity<>(new ResponseMessage("change password successfully"), HttpStatus.OK);
+
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("changeAvatar")
+    public ResponseEntity<?> changeAvatar(HttpServletRequest request, @RequestBody ChangeAvatar changeAvatar) {
+        String jwt = jwtAuthTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromJwtToken(jwt);
+        User user;
+        try{
+            if(changeAvatar.getAvatar()== null){
+                return new ResponseEntity<>(new ResponseMessage("not found"), HttpStatus.OK);
+            }else {
+                user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("Username not found" + username));
+                user.setAvatar(changeAvatar.getAvatar());
+                userService.save(user);
+            }
+            return new ResponseEntity<>(new ResponseMessage("change avatar successfully"), HttpStatus.OK);
+
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

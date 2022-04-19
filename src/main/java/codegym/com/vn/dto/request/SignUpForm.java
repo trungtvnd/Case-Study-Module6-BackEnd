@@ -1,4 +1,4 @@
-package codegym.com.vn.message.request;
+package codegym.com.vn.dto.request;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
