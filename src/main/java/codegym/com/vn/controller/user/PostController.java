@@ -121,9 +121,18 @@ public class PostController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-    @GetMapping("/DisplayByHastags/{id}")
-    public ResponseEntity<Iterable<Post>> showAllByHashTags(@PathVariable("id") Long idHashTags) {
-        Iterable<Post> posts = iPostService.findPostByIdHashTags(idHashTags);
+//    @GetMapping("/DisplayByHastags/{id}")
+//    public ResponseEntity<Iterable<Post>> showAllByHashTags(@PathVariable("id") Long idHashTags) {
+//        Iterable<Post> posts = iPostService.findPostByIdHashTags(idHashTags);
+//        if (!posts.iterator().hasNext()) {
+//            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(posts, HttpStatus.OK);
+//    }
+
+    @GetMapping("displayPostByHashTagsId/{id}")
+    public ResponseEntity<Iterable<Post>> showAllPostByHashTagId(@PathVariable("id") Long idHashTag) {
+        Iterable<Post> posts = iPostService.findPostByHashTag(idHashTag);
         if (!posts.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

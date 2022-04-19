@@ -10,6 +10,9 @@ import java.util.Optional;
 public interface IPostService extends InterfaceGeneral<Post> {
     Iterable<Post> findPostByIdUser(Long idUser);
     Optional<Post> findByHashTags(String hashTags);
-    Iterable<Post> findPostByIdHashTags(Long idHashTags);
+//    Iterable<Post> findPostByIdHashTags(Long idHashTags);
+
+    Iterable<Post> findPostByHashTag(Long idHashTag);
+
 
 }

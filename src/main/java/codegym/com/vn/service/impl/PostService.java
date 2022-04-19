@@ -58,10 +58,10 @@ public class PostService implements IPostService {
         return Optional.empty();
     }
 
-    @Override
-    public Iterable<Post> findPostByIdHashTags(Long idHashTags) {
-        return iPostRepository.findAllByHashTags_Id(idHashTags);
-    }
 
+    @Override
+    public Iterable<Post> findPostByHashTag(Long idHashTag) {
+        return iPostRepository.findAllByHashTags_Id(idHashTag);
+    }
 
 }
