@@ -52,4 +52,9 @@ public class PostService implements IPostService {
     public Iterable<Post> findPostByIdUser(Long idUser) {
         return iPostRepository.findAllByUser_Id(idUser);
     }
+
+    @Override
+    public Iterable<Post> findPostByIdStatus(Long idStatus) {
+        return iPostRepository.findAllByStatus_Id(idStatus);
+    }
 }

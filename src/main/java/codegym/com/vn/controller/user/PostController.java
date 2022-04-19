@@ -44,6 +44,15 @@ public class PostController {
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
+
+    @GetMapping("displayByStatus/{id}")
+    public ResponseEntity<Iterable<Post>> showAllByStatus(@PathVariable("id") Long idStatus) {
+        Iterable<Post> posts = iPostService.findPostByIdStatus(idStatus);
+        if (!posts.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
     //lấy 1 đối tượng theo id
     @GetMapping("/{id}")
     public ResponseEntity<Post> showOne(@PathVariable("id") Long id) {

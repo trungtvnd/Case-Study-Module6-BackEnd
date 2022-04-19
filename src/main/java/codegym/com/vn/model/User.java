@@ -48,8 +48,7 @@ public class  User {
     private String address;
     private String phone;
     private String avatar;
-    @ManyToOne
-    private StatusUser status;
+    private String status;
 
 
     @JsonIgnore

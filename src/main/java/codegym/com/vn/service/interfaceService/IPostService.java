@@ -7,4 +7,5 @@ import java.awt.*;
 
 public interface IPostService extends InterfaceGeneral<Post> {
     Iterable<Post> findPostByIdUser(Long idUser);
+    Iterable<Post> findPostByIdStatus(Long idStatus);
 }
