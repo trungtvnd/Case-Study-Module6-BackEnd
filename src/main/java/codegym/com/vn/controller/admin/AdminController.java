@@ -83,17 +83,17 @@ public class AdminController {
         String jwt = jwtAuthTokenFilter.getJwt(request);
         String username = jwtProvider.getUserNameFromJwtToken(jwt);
         User user = new User();
-        try{
-            if(changeStatusUser.getStatusUser()== null){
+        try {
+            if (changeStatusUser.getStatusUser() == null) {
                 return new ResponseEntity<>(new ResponseMessage("not found"), HttpStatus.OK);
-            }else {
-                user = userService.findById(id).orElseThrow(()-> new UsernameNotFoundException("Username not found" + username));
+            } else {
+                user = userService.findById(id).orElseThrow(() -> new UsernameNotFoundException("Username not found" + username));
                 user.setStatus(changeStatusUser.getStatusUser());
                 userService.save(user);
             }
             return new ResponseEntity<>(new ResponseMessage("change avatar successfully"), HttpStatus.OK);
 
-        }catch (UsernameNotFoundException e){
+        } catch (UsernameNotFoundException e) {
             return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
